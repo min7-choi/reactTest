@@ -1,6 +1,7 @@
 import styled, { keyframes, css } from "styled-components";
 import BgImg from "../assets/vcon_square_bg.png";
-import gifImg from "../assets/emotion1.png";
+import gifImg_ from "../assets/emotion1.png";
+import gifImg from "../assets/1.gif";
 
 const cheerModeOn = keyframes`
   from {
@@ -82,11 +83,15 @@ const VConSquareItem = styled.div`
     10% - 20px
   ); /* 가로로 10개로 균등 분할하되 양 옆에 10px 여백을 주기 위한 계산 */
   height: 100%; /* 상하로 나눈 영역의 높이 조정 */
-  background-color: white; /* 각 아이템의 배경색 지정 (테스트용) */
+  //background-color: white; /* 각 아이템의 배경색 지정 (테스트용) */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   img {
-    width: 100%;
-    height: 100%;
+    max-width: 50%;
+    max-height: 100%;
     object-fit: contain;
   }
 `;
