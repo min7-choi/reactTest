@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useMemo, useRef, useState } from "react";
+import styled from "styled-components";
+import VConSquare from "./pages/VConSquare";
 
-function App() {
+const BackGround = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: grey;
+`;
+
+const App = () => {
+  const [cheerMode, setCheerMode] = useState(true);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BackGround>
+      <h2>asdf</h2>
+      <VConSquare cheermode={true}></VConSquare>;
+    </BackGround>
   );
-}
-
+};
 export default App;
