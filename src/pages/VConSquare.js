@@ -1,126 +1,58 @@
-import styled, { keyframes, css } from "styled-components";
-import BgImg from "../assets/vcon_square_bg.png";
-import gifImg_ from "../assets/emotion1.png";
-import gifImg from "../assets/1.gif";
+import React, { useState, useEffect } from "react";
+import defaultImage from "../assets/1.gif";
+import Image1 from "../assets/emotion1.png";
+import Image2 from "../assets/emotion2.png";
+import Image3 from "../assets/emotion3.png";
+import Image4 from "../assets/emotion4.png";
+import Image5 from "../assets/emotion5.png";
+import Image6 from "../assets/emotion5.png";
 
-const cheerModeOn = keyframes`
-  from {
-    height : 0%;
-    margin-top : 0px;
-  }
-  to {
-    height: 20%;
-    margin-top: 0px;
-  }
-`;
+const MyComponent = () => {
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = [Image1, Image2, Image3, Image4, Image5, Image6];
 
-const cheerModeOff = keyframes`
-  from {
-    height : 15%;
-    margin-top : 15px;
-  }
-  to {
-    height: 0%;
-    margin-top: 0px;
-  }
-`;
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "1") {
+        setIsAnimating((prev) => !prev);
+      }
+    };
 
-const VConSquareArea = styled.div`
-  width: 100%;
-  height: 20%;
-  margin-top: 0px;
-  margin-left: 30px;
-  ${(props) =>
-    props.cheermode ||
-    css`
-      animation: ${cheerModeOn} 0.5s ease forwards;
-    `};
-  ${(props) =>
-    props.cheermode ||
-    css`
-      animation: ${cheerModeOff} 0.5s ease forwards;
-    `};
-`;
+    window.addEventListener("keydown", handleKeyPress);
 
-const VConSquareContainerDiv = styled.div`
-  width: calc(100% - 455px);
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
-const VConSquareContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-image: url(${BgImg});
-  background-size: contain;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 10px;
-`;
+  useEffect(() => {
+    let animationInterval;
 
-const VConSquareUpRow = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2px;
-  flex: 1;
-`;
+    if (isAnimating) {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
 
-const VConSquareDownRow = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  flex: 1;
-`;
-
-const VConSquareItem = styled.div`
-  width: calc(
-    10% - 20px
-  ); /* 가로로 10개로 균등 분할하되 양 옆에 10px 여백을 주기 위한 계산 */
-  height: 100%; /* 상하로 나눈 영역의 높이 조정 */
-  //background-color: white; /* 각 아이템의 배경색 지정 (테스트용) */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    max-width: 50%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-`;
-
-const VConSquare = ({ cheermode }) => {
-  const numItems = 10;
-
-  const renderItems = (num) => {
-    const items = [];
-    for (let i = 0; i < num; i++) {
-      items.push(
-        <VConSquareItem key={i}>
-          <img src={gifImg} alt="GIF" />
-        </VConSquareItem>
-      );
+      animationInterval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 1000);
+    } else {
+      clearInterval(animationInterval);
+      setCurrentImageIndex(0);
     }
-    return items;
-  };
+
+    return () => {
+      clearInterval(animationInterval);
+    };
+  }, [isAnimating]);
 
   return (
-    <VConSquareArea cheermode={cheermode}>
-      <VConSquareContainerDiv>
-        <VConSquareContainer>
-          <VConSquareUpRow>{renderItems(numItems)}</VConSquareUpRow>
-          <VConSquareDownRow>{renderItems(numItems - 1)}</VConSquareDownRow>
-        </VConSquareContainer>
-      </VConSquareContainerDiv>
-    </VConSquareArea>
+    <div>
+      <img
+        src={isAnimating ? images[currentImageIndex] : defaultImage}
+        alt="Image"
+      />
+    </div>
   );
 };
 
-export default VConSquare;
+export default MyComponent;
